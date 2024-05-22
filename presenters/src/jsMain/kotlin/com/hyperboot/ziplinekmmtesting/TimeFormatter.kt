@@ -17,25 +17,23 @@ package com.hyperboot.ziplinekmmtesting
 
 import kotlin.js.Date
 
+//classe che semplicemente resistuisce l'orario (singolo o multiplo)
 class TimeFormatter {
   fun formatLocalTime(
     now: dynamic = Date(),
-    millis: Boolean = false,
+    millis: Boolean = false,//default è false, quindi se valore omesso usa quello
   ): String {
     val originalHours = now.getHours()
     now.setHours(originalHours - 4) // This sample doesn't implement DST.
-    val nyc = formatDate(now, millis)
+    val nyc = formatDate(now, millis)//chiama la funz sotto
 
     return """
       |Time in NYC
       |$nyc
-      """.trimMargin()
+      """.trimMargin()//elimina la barra iniziare ad ogni riga (tra paremtesi si può definire anche un altro carattere)
   }
 
-  fun formatWorldTime(
-    now: dynamic = Date(),
-    millis: Boolean = false,
-  ): String {
+  fun formatWorldTime(now: dynamic = Date(),millis: Boolean = false): String {//indentata così perchè mi viene più facile leggerla (ma uguale all'altra sorpa)
     val originalHours = now.getHours()
 
     now.setHours(originalHours + 2)
@@ -47,15 +45,21 @@ class TimeFormatter {
     now.setHours(originalHours - 7)
     val sf = formatDate(now, millis)
 
+    now.setHours(originalHours + 2)     //aggiunta io
+    val rome = formatDate(now, millis)
+
     return """
       |Barcelona
       |$barcelona
       |
-      |NYC
+      |New York City
       |$nyc
       |
-      |SF
+      |San Francisco
       |$sf
+      |
+      |Roma
+      |$rome
       """.trimMargin()
   }
 
@@ -64,11 +68,11 @@ class TimeFormatter {
     millis: Boolean = false,
   ): String {
     val limit = when {
-      millis -> 23
-      else -> 19
+      millis -> 23//se dovrà stampare anche milliSec allora taglierà la stringa la char di posto 23
+      else -> 19//altrimenti al 19 (quindi non visualizzando ":123")
     }
 
     val string = date.toISOString() as String
-    return string.slice(11 until limit)
+    return string.slice(11 until limit)//ritorna la stringa tagliata da quando iniziano gli orari (char 11) fino a (until) limit (che sarà 23 o 19)
   }
 }

@@ -5,12 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.NoLiveLiterals
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,24 +30,31 @@ class WorldClockActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val model = worldClockAndroid.models.collectAsState()
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = model.value.label,
-                    fontSize = 38.sp,
-                    textAlign = TextAlign.Left,
-                )
-            }
+            SchermataZipline()
         }
 
         worldClockAndroid = WorldClockAndroid(applicationContext, scope)
         worldClockAndroid.start()
+    }
+
+    @androidx.compose.runtime.Composable
+    fun SchermataZipline(modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier) {
+        val model = worldClockAndroid.models.collectAsState()
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .fillMaxWidth()//occupa tutto lo spazio in larghezza
+                .fillMaxHeight(),//e in altezza
+            verticalArrangement = Arrangement.Center,//al centro dello schermo (verticalmente)
+            horizontalAlignment = Alignment.CenterHorizontally//al centro verticalmente
+        ) {
+            Text(
+                text = model.value.label,//prende il testo dal js
+                fontSize = 38.sp,
+                textAlign = TextAlign.Left,
+            )
+            Text(text = "Prova di lable aggiuntiva")
+        }
     }
 
     override fun onDestroy() {

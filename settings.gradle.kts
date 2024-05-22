@@ -20,3 +20,4 @@ rootProject.name = "ziplinekmmtesting"
 include(":android")
 include(":presenters")
 include(":presenters:iosMain")
+include(":ios:shared")

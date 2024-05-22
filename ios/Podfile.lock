@@ -1,16 +1,21 @@
 PODS:
   - presenters (1.0)
+  - shared (1.0)
 
 DEPENDENCIES:
   - presenters (from `../presenters`)
+  - shared (from `shared`)
 
 EXTERNAL SOURCES:
   presenters:
     :path: "../presenters"
+  shared:
+    :path: shared
 
 SPEC CHECKSUMS:
   presenters: 470d372bbdca16f699e03231f5a4e7aada0002ca
+  shared: 756809d64ecb7d65dc92f5ec4c4bc1163c3eb85b
 
-PODFILE CHECKSUM: 149fb7348d81a8c4cca879b7758121d20019ad55
+PODFILE CHECKSUM: a3d195d4e813e9cbc256599e6e9d8be911cec84d
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

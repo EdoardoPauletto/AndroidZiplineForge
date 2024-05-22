@@ -2,4 +2,5 @@ target 'ios' do
   use_frameworks!
   platform :ios, '16.0'
   pod 'presenters', :path => '../presenters'
+  pod 'shared', :path => 'shared'
 end

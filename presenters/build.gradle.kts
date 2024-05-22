@@ -43,29 +43,32 @@ kotlin {
 
     kotlin.sourceSets.named("jsMain") {
         dependencies {
-            implementation(npm("package-name", "version"))
+            implementation(npm("package-name", "version"))//serve?
         }
     }
     
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("app.cash.zipline:zipline:1.7.0")
+                api(libs.zipline)
             }
         }
         val hostMain by creating {
             dependsOn(commonMain)
             dependencies {
-                implementation("app.cash.zipline:zipline-loader:1.7.0")
-                api("com.squareup.okio:okio:3.7.0")
+                implementation(libs.zipline.loader)
+                api(libs.okio.core)
             }
         }
 
         val androidMain by getting {
             dependsOn(hostMain)
             dependencies {
-                implementation("com.squareup.okhttp3:okhttp:4.9.2")
+                implementation(libs.okHttp.core)
             }
+        }
+        val iosMain by getting {
+            dependsOn(hostMain)
         }
     }
 }

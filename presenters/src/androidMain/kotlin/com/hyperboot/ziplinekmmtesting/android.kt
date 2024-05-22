@@ -19,7 +19,7 @@ class WorldClockAndroid(
     private val okHttpClient = OkHttpClient()
 
     val events = flowOf<WorldClockEvent>()
-    val models = MutableStateFlow(WorldClockModel(label = "..."))
+    val models = MutableStateFlow(WorldClockModel(label = "..."))//inizializza la lable così in caso di js spento
 
     fun start() {
         startWorldClockZipline(
