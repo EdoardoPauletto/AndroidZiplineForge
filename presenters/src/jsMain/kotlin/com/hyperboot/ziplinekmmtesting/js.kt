@@ -14,21 +14,20 @@ private val zipline by lazy { Zipline.get() }
 @OptIn(ExperimentalJsExport::class)
 @JsExport
 fun main() {
-  val worldClockHost = zipline.take<WorldClockHost>("WorldClockHost")
   zipline.bind<WorldClockPresenter>(
     name = "WorldClockPresenter",
-    instance = RealWorldClockPresenter(worldClockHost),//le virgole servono perchè continua nella riga sotto
+    instance = RealWorldClockPresenter(),//le virgole servono perchè continua nella riga sotto
   )
 }
 
-class RealWorldClockPresenter( private val host: WorldClockHost ) : WorldClockPresenter {
-  override fun models( events: Flow<WorldClockEvent> ): Flow<WorldClockModel> {
+class RealWorldClockPresenter : WorldClockPresenter {
+  override fun models(): Flow<WorldClockModel> {
     return flow {//infatti restituisce un flusso
       while (true) {//come da documentazione (flusso infinito)
         emit(//emette tutta la classe istanziata qua sotto
           WorldClockModel(
-            //label = TimeFormatter().formatWorldTime(millis = true)
-            label = TimeFormatter().formatLocalTime()//solo 1 orario
+            label = TimeFormatter().formatWorldTime(millis = true)
+            //label = TimeFormatter().formatLocalTime()//solo 1 orario
             //label = SayHello().getMessage()//alternativa d'esempio fatta da loro
           ),
         )

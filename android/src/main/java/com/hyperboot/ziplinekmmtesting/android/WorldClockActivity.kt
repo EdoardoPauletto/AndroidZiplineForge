@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,13 +32,13 @@ class WorldClockActivity : ComponentActivity() {
             SchermataZipline()
         }
 
-        worldClockAndroid = WorldClockAndroid(applicationContext, scope)
+        worldClockAndroid = WorldClockAndroid(scope)
         worldClockAndroid.start()
     }
 
     @androidx.compose.runtime.Composable
     fun SchermataZipline(modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier) {
-        val model = worldClockAndroid.models.collectAsState()
+        val model = worldClockAndroid.models.collectAsState()//prende tutti gli stati del flow e usa l'ultimo
         Column(
             modifier = Modifier
                 .padding(horizontal = 12.dp)

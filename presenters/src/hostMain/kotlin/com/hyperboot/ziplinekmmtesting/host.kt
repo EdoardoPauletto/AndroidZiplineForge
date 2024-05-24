@@ -1,6 +1,5 @@
 package com.hyperboot.ziplinekmmtesting
 
-import app.cash.zipline.Zipline
 import app.cash.zipline.loader.LoadResult
 import app.cash.zipline.loader.ZiplineLoader
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,33 +16,28 @@ import kotlinx.coroutines.launch
 fun startWorldClockZipline(
   scope: CoroutineScope,
   ziplineDispatcher: CoroutineDispatcher,
-  ziplineLoader: ZiplineLoader,
+  ziplineLoader: ZiplineLoader,//lo passa già istanziato
   manifestUrl: String,
-  host: WorldClockHost,
-  events: Flow<WorldClockEvent>,
   models: MutableStateFlow<WorldClockModel>,
 ) {
+  //Lancia una nuova coroutine senza bloccare il thread corrente e ritorna una reference alla coroutine come Job
   scope.launch(ziplineDispatcher + SupervisorJob()) {
     val loadResultFlow: Flow<LoadResult> = ziplineLoader.load(
-      applicationName = "world-clock",
-      manifestUrlFlow = repeatFlow(manifestUrl, 500L),
-      initializer = { zipline: Zipline ->
-        zipline.bind("WorldClockHost", host)
-      },
+      applicationName = "world-clock",//nome qui va bene qualsiasi
+      manifestUrlFlow = repeatFlow(manifestUrl, 500L)
     )
 
-    var previousJob: Job? = null
-
+    var previousJob: Job? = null//questo serve dopo
+    //colleziono i risultati dei caricamenti dei flow
     loadResultFlow.collect { result ->
-      previousJob?.cancel()
-      println("zzz  $result")
+      previousJob?.cancel()//ri-inizializzo il lavoro da fare (perchè altrimenti riceve solo un cambiamento e poi considera il lavoro concluso e interrompe)
 
       if (result is LoadResult.Success) {
         val zipline = result.zipline
         val presenter = zipline.take<WorldClockPresenter>("WorldClockPresenter")
-
+        //ne lancio un altra, altrimenti riceve un solo cambiamento
         val job = launch {
-          models.emitAll(presenter.models(events))
+          models.emitAll(presenter.models())
         }
 
         job.invokeOnCompletion {
@@ -52,14 +46,24 @@ fun startWorldClockZipline(
           // zipline.close()
         }
 
-        previousJob = job
+        previousJob = job//se facessi il cancel direttamente qua farebbe strani glitch
       }
     }
+
+    //così lo carica solo una volta e lo mantiene in memoria anche se si spegne il server
+//    val collegamentoAzipline = ziplineLoader.loadOnce("prova", manifestUrl)
+//    if (collegamentoAzipline is LoadResult.Success){
+//      //provo a prendere l'oggetto "WorldClockPresenter"
+//      val zwcp = collegamentoAzipline.zipline.take<WorldClockPresenter>("WorldClockPresenter")
+//      //lo restituisco
+//      models.emitAll(zwcp.models())
+//      zwcp.close()
+//    }
   }
 }
 
 /** Poll for code updates by emitting the manifest on an interval. */
-private fun <T> repeatFlow(content: T, delayMillis: Long): Flow<T> {
+private fun <T> repeatFlow(content: T, delayMillis: Long): Flow<T> {//gli mando sempre lo stesso url ogni tot perchè non cambia
   return flow {
     while (true) {
       emit(content)

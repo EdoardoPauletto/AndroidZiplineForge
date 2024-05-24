@@ -20,7 +20,6 @@ import app.cash.zipline.loader.ZiplineLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import platform.Foundation.NSURLSession
 
@@ -30,7 +29,6 @@ class WorldClockIos(
     private val ziplineDispatcher = Dispatchers.Main
     private val urlSession = NSURLSession.sharedSession
 
-    val events = flowOf<WorldClockEvent>()
     val models = MutableStateFlow(WorldClockModel(label = "..."))
 
     fun start(modelsCallback: (WorldClockModel) -> Unit) {
@@ -43,8 +41,6 @@ class WorldClockIos(
                 urlSession = urlSession,
             ),
             manifestUrl = "http://localhost:8080/manifest.zipline.json",
-            host = RealWorldClockHost(),
-            events = events,
             models = models,
         )
         scope.launch(ziplineDispatcher) {
