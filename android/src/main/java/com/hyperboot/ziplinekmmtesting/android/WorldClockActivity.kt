@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -26,19 +25,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hyperboot.ziplinekmmtesting.TriviaService
 import com.hyperboot.ziplinekmmtesting.WorldClockAndroid
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
 
 @NoLiveLiterals
 class WorldClockActivity : ComponentActivity() {
@@ -85,8 +78,21 @@ class WorldClockActivity : ComponentActivity() {
             if (mazziere != null){
                 val gioca = mazziere.games()[0]
                 var domandaNum by rememberSaveable { mutableIntStateOf(0) }
-                var punteggio by rememberSaveable { mutableIntStateOf(0) }
-                val rispEsatte by rememberSaveable { mutableStateOf(BooleanArray(gioca.question.size)) }
+                var punteggio = 0
+                var rispEsatte by rememberSaveable { mutableStateOf(BooleanArray(gioca.question.size)) }
+                //aggiungere domande tenendo in memoria quelle già giuste
+                val tmp = BooleanArray(gioca.question.size)
+                val totDomande: Int = if (rispEsatte.size > tmp.size) tmp.size else rispEsatte.size
+                var i = 0
+                while (i < totDomande){
+                    tmp[i] = rispEsatte[i]
+                    i++
+                }
+                rispEsatte = tmp
+
+                for (risposta in rispEsatte){
+                    if (risposta) punteggio++
+                }
 
                 var answer by remember { mutableStateOf("") }
                 var control by remember { mutableStateOf(false) }
@@ -164,12 +170,6 @@ class WorldClockActivity : ComponentActivity() {
                 )
             }
         }
-    }
-
-    fun verificaRisposta(risposta: String) : Boolean {
-        return if (risposta == "4") {
-            true
-        } else false
     }
 
     override fun onDestroy() {
