@@ -34,6 +34,21 @@ class RealTriviaService: TriviaService{
                         )
                     }
                 },
+//                object : QuestionAndAnswer {
+//                    override val question =
+//                        "Android Studio ships with a mode to emulate this editor in case you can't quit it"
+//
+//                    override fun result(answer: String) = when {
+//                        answer.matches(Regex("vim?", option = RegexOption.IGNORE_CASE)) -> AnswerResult(
+//                            correct = true,
+//                            message = "You got it! :wq while you're ahead!",
+//                        )
+//                        else -> AnswerResult(
+//                            correct = false,
+//                            message = "Not that! Are you taking your VItamins?",
+//                        )
+//                    }
+//                },
             )
         )
     )

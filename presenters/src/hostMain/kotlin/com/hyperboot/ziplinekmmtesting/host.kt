@@ -80,11 +80,20 @@ fun startTriviaZipline(
   trivia: MutableStateFlow<TriviaService?>
 ) {
   scope.launch(ziplineDispatcher + SupervisorJob()) {
-    val connectToZipline = ziplineLoader.loadOnce("trivia", manifestUrl)
-    if (connectToZipline is LoadResult.Success) {
-      val oggetto = connectToZipline.zipline.take<TriviaService>("Trivia")
-      trivia.emit(oggetto)
-      //oggetto.close()
+    val connectToZiplineFlow: Flow<LoadResult> = ziplineLoader.load(
+      applicationName = "trivia",
+      manifestUrlFlow = repeatFlow(manifestUrl, 1000L)
+    )
+    var previousJob: Job? = null
+    connectToZiplineFlow.collect{ result ->
+      previousJob?.cancel()
+      if (result is LoadResult.Success) {
+        val oggetto = result.zipline.take<TriviaService>("Trivia")
+        val job = launch {
+          trivia.emit(oggetto)
+        }
+        previousJob = job
+      }
     }
   }
 }
