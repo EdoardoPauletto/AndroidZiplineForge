@@ -71,3 +71,20 @@ private fun <T> repeatFlow(content: T, delayMillis: Long): Flow<T> {//gli mando 
     }
   }
 }
+
+fun startTriviaZipline(
+  scope: CoroutineScope,
+  ziplineDispatcher: CoroutineDispatcher,
+  ziplineLoader: ZiplineLoader,
+  manifestUrl: String,
+  trivia: MutableStateFlow<TriviaService?>
+) {
+  scope.launch(ziplineDispatcher + SupervisorJob()) {
+    val connectToZipline = ziplineLoader.loadOnce("trivia", manifestUrl)
+    if (connectToZipline is LoadResult.Success) {
+      val oggetto = connectToZipline.zipline.take<TriviaService>("Trivia")
+      trivia.emit(oggetto)
+      //oggetto.close()
+    }
+  }
+}

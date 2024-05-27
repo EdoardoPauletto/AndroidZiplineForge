@@ -5,6 +5,7 @@ import app.cash.zipline.loader.ZiplineLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import java.util.concurrent.Executors
 
@@ -14,6 +15,11 @@ class WorldClockAndroid(private val scope: CoroutineScope) {
     //private val okHttpClient = OkHttpClient()
 
     val models = MutableStateFlow(WorldClockModel(label = "..."))//inizializza la lable così in caso di js spento
+    //val triviaGame: TriviaGame? = null
+    //val answerResult: AnswerResult? = null
+    val interfaccia: TriviaService? = null
+    val trivia = MutableStateFlow(interfaccia)
+    //val triviaA = MutableStateFlow(answerResult)
 
     fun start() {
         startWorldClockZipline(
@@ -26,6 +32,19 @@ class WorldClockAndroid(private val scope: CoroutineScope) {
             ),
             manifestUrl = "http://10.0.2.2:8080/manifest.zipline.json",
             models = models,
+        )
+    }
+    fun startTrivia() {
+        startTriviaZipline(
+            scope = scope,
+            ziplineDispatcher = ziplineDispatcher,
+            ziplineLoader = ZiplineLoader(
+                dispatcher = ziplineDispatcher,
+                manifestVerifier = NO_SIGNATURE_CHECKS,
+                httpClient = OkHttpClient(),
+            ),
+            manifestUrl = "http://10.0.2.2:8080/manifest.zipline.json",
+            trivia = trivia
         )
     }
 

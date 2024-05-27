@@ -18,6 +18,7 @@ fun main() {
     name = "WorldClockPresenter",
     instance = RealWorldClockPresenter(),//le virgole servono perchè continua nella riga sotto
   )
+  zipline.bind<TriviaService>("Trivia", RealTriviaService())
 }
 
 class RealWorldClockPresenter : WorldClockPresenter {
