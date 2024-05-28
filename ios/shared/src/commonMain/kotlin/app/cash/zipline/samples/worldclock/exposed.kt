@@ -15,6 +15,10 @@
  */
 package app.cash.zipline.samples.worldclock
 
+import com.hyperboot.ziplinekmmtesting.AnswerResult
+import com.hyperboot.ziplinekmmtesting.Question
+import com.hyperboot.ziplinekmmtesting.TriviaGame
+import com.hyperboot.ziplinekmmtesting.TriviaService
 import com.hyperboot.ziplinekmmtesting.WorldClockIos
 import com.hyperboot.ziplinekmmtesting.WorldClockModel
 import com.hyperboot.ziplinekmmtesting.WorldClockPresenter
@@ -27,6 +31,12 @@ import platform.Foundation.NSData
 @Suppress("unused", "UNUSED_PARAMETER") // Used to export types to Objective-C / Swift.
 fun exposedTypes(
   worldClockIos: WorldClockIos,
+  //trivia
+  triviaService: TriviaService,
+  triviaGame: TriviaGame,
+  question: Question,
+  answerResult: AnswerResult,
+  //orologio
   worldClockModel: WorldClockModel,
   worldClockPresenter: WorldClockPresenter,
 ) {

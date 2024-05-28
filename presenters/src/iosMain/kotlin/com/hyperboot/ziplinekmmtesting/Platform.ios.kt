@@ -20,16 +20,17 @@ import app.cash.zipline.loader.ZiplineLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import platform.Foundation.NSURLSession
 
-class WorldClockIos(
-    private val scope: CoroutineScope,
-) {
+class WorldClockIos(private val scope: CoroutineScope) {
     private val ziplineDispatcher = Dispatchers.Main
     private val urlSession = NSURLSession.sharedSession
 
     val models = MutableStateFlow(WorldClockModel(label = "..."))
+    private val interfaccia: TriviaService? = null
+    val trivia = MutableStateFlow(interfaccia)
 
     fun start(modelsCallback: (WorldClockModel) -> Unit) {
         startWorldClockZipline(
@@ -46,6 +47,25 @@ class WorldClockIos(
         scope.launch(ziplineDispatcher) {
             models.collect { model ->
                 modelsCallback(model)
+            }
+        }
+    }
+
+    fun startTrivia(modelsCallback: (TriviaService?) -> Unit){
+        startTriviaZipline(
+            scope = scope,
+            ziplineDispatcher = ziplineDispatcher,
+            ziplineLoader = ZiplineLoader(
+                dispatcher = ziplineDispatcher,
+                manifestVerifier = NO_SIGNATURE_CHECKS,
+                urlSession = urlSession,
+            ),
+            manifestUrl = "http://localhost:8080/manifest.zipline.json",
+            trivia = trivia
+        )
+        scope.launch(ziplineDispatcher) {
+            trivia.collect{ t ->
+                modelsCallback(t)
             }
         }
     }
