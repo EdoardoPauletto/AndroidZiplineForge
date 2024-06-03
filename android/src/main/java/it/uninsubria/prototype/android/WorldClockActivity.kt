@@ -1,7 +1,6 @@
-package com.hyperboot.ziplinekmmtesting.android
+package it.uninsubria.prototype.android
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -25,11 +24,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hyperboot.ziplinekmmtesting.WorldClockAndroid
+import it.uninsubria.prototype.WorldClockAndroid
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 

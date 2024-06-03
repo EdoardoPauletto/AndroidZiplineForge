@@ -1,6 +1,6 @@
-package com.hyperboot.ziplinekmmtesting
+package it.uninsubria.prototype
 
-class RealTriviaService: TriviaService{
+class RealTriviaService: TriviaService {
     private val gameWithAnswersList = listOf(
         GameWithAnswers(
             id = 0,

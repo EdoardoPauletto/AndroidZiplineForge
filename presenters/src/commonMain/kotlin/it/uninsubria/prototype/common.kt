@@ -1,4 +1,4 @@
-package com.hyperboot.ziplinekmmtesting
+package it.uninsubria.prototype
 
 
 import app.cash.zipline.ZiplineService

@@ -1,15 +1,17 @@
-## ZiplineKMMTesting
-This is zipline testing project that uses Kotlin Multiplatform Mobile (KMM) to share code between Android and iOS. The project is based on the [Zipline](https://github.com/cashapp/zipline).
+# PrototypeZipline
+This is zipline prototype project for university that uses [Kotlin Multiplatform (KMP)](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html) to share code between Android and iOS. 
+It is based on [Zipline](https://github.com/cashapp/zipline) and [ZiplineKMMTesting](https://github.com/Akshatji800/ziplinekmmtesting), made in collaboration with [Forge S.R.L](https://github.com/Forge-Srl).
 
-### How to run
+## How to run
 1. Clone the project
 2. Open the project in Android Studio
 3. Wait for the Gradle to finish syncing
 4. Have cmake installed (on Mac, you can use brew install cmake)
 5. Build QuickJS for your platform using ./.github/workflows/build-mac.sh (replace -mac with the appropriate script for your machine type). This is a one-time process.
-6. Type the command ` ./gradlew android:installDebug ` in the android studio terminal and press cmd + return to run it (you are executing here a gradle task - keep in mind that two gradle tasks can't be executed parallelly so wait for other to finish if you have already one running for example: gradle sync). This will install the app on your emulator.
-7. Type the command ` ./gradlew presenters:serveDevelopmentZipline --info --continuous ` in the terminal and press cmd + return to run it. This will compile Kotlin/JS and serve it at [[http://localhost:8080/manifest.zipline.json]]. The server will run until you CTRL+C the process.
-8. Start the app on your emulator. You should see the app running with the JS bundle served from the local server. You can now make changes to the JS code (RealWorldClockPresenter [file path: presenters/src/jsMain/kotlin/com/hyperboot/ziplinekmmtesting/js.kt] example change: ` TimeFormatter().formatLocalTime(millis = true) ` to ` TimeFormatter().formatLocalTime(millis = false) `) and see them reflected in the app.
+6. Open the [Android](presenters/src/androidMain/kotlin/it/uninsubria/prototype/android.kt) or [iOS](presenters/src/iosMain/kotlin/it/uninsubria/prototype/Platform.ios.kt) file and change the `manifestUrl` parameter to develop locally.
+7. Type the command ` ./gradlew android:installDebug ` in the android studio terminal and press cmd + return to run it (you are executing here a gradle task - keep in mind that two gradle tasks can't be executed parallelly so wait for other to finish if you have already one running for example: gradle sync). This will install the app on your emulator.
+8. Type the command ` ./gradlew presenters:serveDevelopmentZipline --info --continuous ` in the terminal and press cmd + return to run it. This will compile Kotlin/JS and serve it at [localhost:8080/manifest.zipline.json](http://localhost:8080/manifest.zipline.json). The server will run until you CTRL+C the process.
+9. Start the app on your emulator. You should see the app running with the JS bundle served from the local server. You can now make changes to the JS code (RealWorldClockPresenter [file path: presenters/src/jsMain/kotlin/com/hyperboot/ziplinekmmtesting/js.kt] example change: ` TimeFormatter().formatLocalTime(millis = true) ` to ` TimeFormatter().formatLocalTime(millis = false) `) and see them reflected in the app.
 
 ### Credits
 What is [Zipline](https://github.com/cashapp/zipline)?
@@ -45,4 +47,4 @@ Here are some scenarios where Zipline can be beneficial:
   This embedded JavaScript engine allows seamless communication between Kotlin and JavaScript, enabling developers to fetch and use JavaScript code as easily as fetching data.
   In summary, Zipline aims to simplify the process of incorporating and updating JavaScript functionality in Kotlin-based applications, providing flexibility for various deployment scenarios and dynamic updates.
 
-Thanks to [cash-app](https://github.com/cashapp) for zipline :)
+Thanks to [cash-app](https://github.com/cashapp) for zipline.

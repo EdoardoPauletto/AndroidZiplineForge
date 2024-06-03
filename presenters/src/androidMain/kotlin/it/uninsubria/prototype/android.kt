@@ -1,4 +1,4 @@
-package com.hyperboot.ziplinekmmtesting
+package it.uninsubria.prototype
 
 import app.cash.zipline.loader.ManifestVerifier.Companion.NO_SIGNATURE_CHECKS
 import app.cash.zipline.loader.ZiplineLoader
@@ -14,11 +14,9 @@ class WorldClockAndroid(private val scope: CoroutineScope) {
     //private val okHttpClient = OkHttpClient()
 
     val models = MutableStateFlow(WorldClockModel(label = "..."))//inizializza la lable così in caso di js spento
-    //val triviaGame: TriviaGame? = null
-    //val answerResult: AnswerResult? = null
+    //dovrei inizializzarla creando una classe che lo implementa nel caso offline
     private val interfaccia: TriviaService? = null
     val trivia = MutableStateFlow(interfaccia)
-    //val triviaA = MutableStateFlow(answerResult)
 
     fun start() {
         startWorldClockZipline(
@@ -43,6 +41,7 @@ class WorldClockAndroid(private val scope: CoroutineScope) {
                 httpClient = OkHttpClient(),
             ),
             manifestUrl = "https://raw.githubusercontent.com/EdoardoPauletto/forge/main/productionExecutable/kotlinZipline/manifest.zipline.json",
+            //manifestUrl = "http://10.0.2.2:8080/manifest.zipline.json",
             trivia = trivia
         )
     }

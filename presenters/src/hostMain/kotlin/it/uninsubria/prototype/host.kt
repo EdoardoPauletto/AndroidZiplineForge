@@ -1,4 +1,4 @@
-package com.hyperboot.ziplinekmmtesting
+package it.uninsubria.prototype
 
 import app.cash.zipline.loader.DefaultFreshnessCheckerNotFresh
 import app.cash.zipline.loader.LoadResult
@@ -15,11 +15,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 fun startWorldClockZipline(
-  scope: CoroutineScope,
-  ziplineDispatcher: CoroutineDispatcher,
-  ziplineLoader: ZiplineLoader,//lo passa già istanziato
-  manifestUrl: String,
-  models: MutableStateFlow<WorldClockModel>,
+    scope: CoroutineScope,
+    ziplineDispatcher: CoroutineDispatcher,
+    ziplineLoader: ZiplineLoader,//lo passa già istanziato
+    manifestUrl: String,
+    models: MutableStateFlow<WorldClockModel>,
 ) {
   //Lancia una nuova coroutine senza bloccare il thread corrente e ritorna una reference alla coroutine come Job
   scope.launch(ziplineDispatcher + SupervisorJob()) {

@@ -15,13 +15,13 @@
  */
 package app.cash.zipline.samples.worldclock
 
-import com.hyperboot.ziplinekmmtesting.AnswerResult
-import com.hyperboot.ziplinekmmtesting.Question
-import com.hyperboot.ziplinekmmtesting.TriviaGame
-import com.hyperboot.ziplinekmmtesting.TriviaService
-import com.hyperboot.ziplinekmmtesting.WorldClockIos
-import com.hyperboot.ziplinekmmtesting.WorldClockModel
-import com.hyperboot.ziplinekmmtesting.WorldClockPresenter
+import it.uninsubria.prototype.AnswerResult
+import it.uninsubria.prototype.Question
+import it.uninsubria.prototype.TriviaGame
+import it.uninsubria.prototype.TriviaService
+import it.uninsubria.prototype.WorldClockIos
+import it.uninsubria.prototype.WorldClockModel
+import it.uninsubria.prototype.WorldClockPresenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import okio.ByteString
@@ -30,15 +30,15 @@ import platform.Foundation.NSData
 
 @Suppress("unused", "UNUSED_PARAMETER") // Used to export types to Objective-C / Swift.
 fun exposedTypes(
-  worldClockIos: WorldClockIos,
+    worldClockIos: WorldClockIos,
   //trivia
-  triviaService: TriviaService,
-  triviaGame: TriviaGame,
-  question: Question,
-  answerResult: AnswerResult,
+    triviaService: TriviaService,
+    triviaGame: TriviaGame,
+    question: Question,
+    answerResult: AnswerResult,
   //orologio
-  worldClockModel: WorldClockModel,
-  worldClockPresenter: WorldClockPresenter,
+    worldClockModel: WorldClockModel,
+    worldClockPresenter: WorldClockPresenter,
 ) {
   throw AssertionError()
 }

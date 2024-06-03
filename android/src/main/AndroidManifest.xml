@@ -5,12 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:label="TriviaProtorype"
+        android:label="Trivia Prototype"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".WorldClockActivity"
+            android:name="it.uninsubria.prototype.android.WorldClockActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

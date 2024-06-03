@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.hyperboot.ziplinekmmtesting.android"
+    namespace = "it.uninsubria.prototype.android"
     compileSdk = 34
     defaultConfig {
-        applicationId = "com.hyperboot.ziplinekmmtesting.android"
+        applicationId = "it.uninsubria.prototype.android"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

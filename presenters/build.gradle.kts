@@ -74,7 +74,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.hyperboot.ziplinekmmtesting.presenters"
+    namespace = "it.uninsubria.prototype.presenters"
     compileSdk = 34
     defaultConfig {
         minSdk = 26
@@ -82,7 +82,8 @@ android {
 }
 
 zipline {
-    mainFunction.set("com.hyperboot.ziplinekmmtesting.main")
+    //Questa proprietà serve alla parte guest (cioè il server)
+    mainFunction.set("it.uninsubria.prototype.main")
 }
 
 plugins.withType<YarnPlugin> {

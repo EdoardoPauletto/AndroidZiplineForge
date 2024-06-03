@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hyperboot.ziplinekmmtesting
+package it.uninsubria.prototype
 
 import app.cash.zipline.loader.ManifestVerifier.Companion.NO_SIGNATURE_CHECKS
 import app.cash.zipline.loader.ZiplineLoader
+import it.uninsubria.prototype.TriviaService
+import it.uninsubria.prototype.WorldClockModel
+import it.uninsubria.prototype.startTriviaZipline
+import it.uninsubria.prototype.startWorldClockZipline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +31,9 @@ class WorldClockIos(private val scope: CoroutineScope) {
     private val ziplineDispatcher = Dispatchers.Main
     private val urlSession = NSURLSession.sharedSession
 
-    val models = MutableStateFlow(WorldClockModel(label = "..."))
+    private val models = MutableStateFlow(WorldClockModel(label = "..."))
     private val interfaccia: TriviaService? = null
-    val trivia = MutableStateFlow(interfaccia)
+    private val trivia = MutableStateFlow(interfaccia)
 
     fun start(modelsCallback: (WorldClockModel) -> Unit) {
         startWorldClockZipline(
