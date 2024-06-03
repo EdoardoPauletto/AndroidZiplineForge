@@ -138,9 +138,9 @@ class WorldClockActivity : ComponentActivity() {
                                 if (risposta) punteggio++
                             }
                             //enable = false
-                        } else {
+                        } /*else {
                             Toast.makeText(LocalContext.current, "Errato", Toast.LENGTH_SHORT).show()
-                        }
+                        }*/
                     }
                     Button(
                         modifier = modifier.padding(top = 35.dp),

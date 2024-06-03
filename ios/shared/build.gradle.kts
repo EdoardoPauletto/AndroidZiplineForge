@@ -15,7 +15,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation("app.cash.zipline:zipline")
+        implementation(libs.zipline)
         implementation(libs.coroutine)
         implementation(projects.presenters)
       }

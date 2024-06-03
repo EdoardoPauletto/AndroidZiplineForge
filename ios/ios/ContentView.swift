@@ -50,7 +50,6 @@ struct QuizView: View {
                         rispEsatte[domandaNum] = true
                         punteggio = 0
                         punteggio = rispEsatte.filter({$0 == true}).count
-                        //disableButton = true
                     }
                     enableAlert = true
                 }
@@ -75,7 +74,6 @@ struct QuizView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(12)
             }
-            
         }
         .alert(dialog, isPresented: $enableAlert) {
             Button("OK", role: .cancel) { }

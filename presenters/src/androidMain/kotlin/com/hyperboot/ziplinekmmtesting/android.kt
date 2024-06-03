@@ -42,7 +42,7 @@ class WorldClockAndroid(private val scope: CoroutineScope) {
                 manifestVerifier = NO_SIGNATURE_CHECKS,
                 httpClient = OkHttpClient(),
             ),
-            manifestUrl = "http://10.0.2.2:8080/manifest.zipline.json",
+            manifestUrl = "https://raw.githubusercontent.com/EdoardoPauletto/forge/main/productionExecutable/kotlinZipline/manifest.zipline.json",
             trivia = trivia
         )
     }

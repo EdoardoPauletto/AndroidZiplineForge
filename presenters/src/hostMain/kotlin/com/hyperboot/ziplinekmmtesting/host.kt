@@ -1,5 +1,6 @@
 package com.hyperboot.ziplinekmmtesting
 
+import app.cash.zipline.loader.DefaultFreshnessCheckerNotFresh
 import app.cash.zipline.loader.LoadResult
 import app.cash.zipline.loader.ZiplineLoader
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,6 +25,7 @@ fun startWorldClockZipline(
   scope.launch(ziplineDispatcher + SupervisorJob()) {
     val loadResultFlow: Flow<LoadResult> = ziplineLoader.load(
       applicationName = "world-clock",//nome qui va bene qualsiasi
+      freshnessChecker = DefaultFreshnessCheckerNotFresh,
       manifestUrlFlow = repeatFlow(manifestUrl, 500L)
     )
 
@@ -80,8 +82,10 @@ fun startTriviaZipline(
   trivia: MutableStateFlow<TriviaService?>
 ) {
   scope.launch(ziplineDispatcher + SupervisorJob()) {
+
     val connectToZiplineFlow: Flow<LoadResult> = ziplineLoader.load(
       applicationName = "trivia",
+      freshnessChecker = DefaultFreshnessCheckerNotFresh,
       manifestUrlFlow = repeatFlow(manifestUrl, 1000L)
     )
     var previousJob: Job? = null
@@ -97,3 +101,8 @@ fun startTriviaZipline(
     }
   }
 }
+//class prova: FreshnessChecker {
+//  override fun isFresh(manifest: ZiplineManifest, freshAtEpochMs: Long): Boolean {
+//    return freshAtEpochMs > 5000L
+//  }
+//}
