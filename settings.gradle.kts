@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ziplinekmmtesting"
+rootProject.name = "ziplineprototype"
 include(":android")
 include(":presenters")
 include(":presenters:iosMain")

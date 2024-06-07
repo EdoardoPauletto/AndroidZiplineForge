@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NoLiveLiterals
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.uninsubria.prototype.WorldClockAndroid
+import it.uninsubria.prototype.android.ui.theme.PrototypeTheme
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 
@@ -40,8 +42,10 @@ class WorldClockActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            //SchermataZipline()
-            SchermataQuiz()
+            PrototypeTheme {
+                //SchermataZipline()
+                SchermataQuiz()
+            }
         }
 
         worldClockAndroid = WorldClockAndroid(scope)
@@ -94,66 +98,69 @@ class WorldClockActivity : ComponentActivity() {
 
                 var answer by remember { mutableStateOf("") }
                 var control by remember { mutableStateOf(false) }
-                Column (
-                    modifier = modifier.padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        modifier = modifier.padding(15.dp),
-                        text = gioca.question[domandaNum].text
-                    )
-                    OutlinedTextField(
-                        value = answer,
-                        onValueChange = { answer = it},
-                        label = { Text("Risposta")},
-                        //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        singleLine = true,
-                        modifier = modifier.fillMaxWidth()
-                    )
-                    Button(
-                        modifier = modifier.padding(top = 15.dp),
-                        onClick = { control = true },
-                        enabled = !rispEsatte[domandaNum]
+                Surface(modifier.fillMaxSize()) { //serve per circondare tutto con il tema
+                    Column(
+                        modifier = modifier.padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Invia")
-                    }
-                    if (control) {
-                        val result = mazziere.answer(gioca.id,gioca.question[domandaNum].id,answer)
-                        AlertDialog(
-                            onDismissRequest = { control = false },
-                            confirmButton = {
-                                Button(onClick = { control = false })
-                                {
-                                    Text("Ok")
-                                }
-                            },
-                            text = { Text( result.message)}
+                        Text(
+                            modifier = modifier.padding(15.dp),
+                            text = gioca.question[domandaNum].text
                         )
-                        if (result.correct) {
-                            rispEsatte[domandaNum] = true
-                            punteggio = 0
-                            for (risposta in rispEsatte){
-                                if (risposta) punteggio++
-                            }
-                            //enable = false
-                        } /*else {
-                            Toast.makeText(LocalContext.current, "Errato", Toast.LENGTH_SHORT).show()
-                        }*/
-                    }
-                    Button(
-                        modifier = modifier.padding(top = 35.dp),
-                        onClick = {
-                            if (domandaNum < gioca.question.size-1) domandaNum++
-                            else domandaNum = 0
-                            answer = ""
+                        OutlinedTextField(
+                            value = answer,
+                            onValueChange = { answer = it },
+                            label = { Text("Risposta") },
+                            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            singleLine = true,
+                            modifier = modifier.fillMaxWidth()
+                        )
+                        Button(
+                            modifier = modifier.padding(top = 15.dp),
+                            onClick = { control = true },
+                            enabled = !rispEsatte[domandaNum]
+                        ) {
+                            Text(text = "Invia")
                         }
-                    ) {
-                        Text(text = "Prossima domanda ->")
+                        if (control) {
+                            val result =
+                                mazziere.answer(gioca.id, gioca.question[domandaNum].id, answer)
+                            AlertDialog(
+                                onDismissRequest = { control = false },
+                                confirmButton = {
+                                    Button(onClick = { control = false })
+                                    {
+                                        Text("Ok")
+                                    }
+                                },
+                                text = { Text(result.message) }
+                            )
+                            if (result.correct) {
+                                rispEsatte[domandaNum] = true
+                                punteggio = 0
+                                for (risposta in rispEsatte) {
+                                    if (risposta) punteggio++
+                                }
+                                //enable = false
+                            } /*else {
+                             Toast.makeText(LocalContext.current, "Errato", Toast.LENGTH_SHORT).show()
+                         }*/
+                        }
+                        Button(
+                            modifier = modifier.padding(top = 35.dp),
+                            onClick = {
+                                if (domandaNum < gioca.question.size - 1) domandaNum++
+                                else domandaNum = 0
+                                answer = ""
+                            }
+                        ) {
+                            Text(text = "Prossima domanda ->")
+                        }
+                        Text(
+                            modifier = modifier.padding(top = 15.dp),
+                            text = "Punteggio: $punteggio/${gioca.question.size}"
+                        )
                     }
-                    Text(
-                        modifier = modifier.padding(top = 15.dp),
-                        text = "Punteggio: $punteggio/${gioca.question.size}"
-                    )
                 }
             }
         } else {
