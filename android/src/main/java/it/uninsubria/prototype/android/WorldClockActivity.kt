@@ -11,9 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NoLiveLiterals
 import androidx.compose.runtime.collectAsState
@@ -25,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,107 +78,126 @@ class WorldClockActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun SchermataQuiz(modifier: Modifier = Modifier) {
-        val objJS = worldClockAndroid.trivia.collectAsState()
-        if (objJS.value != null) {
-            val mazziere = objJS.value
-            if (mazziere != null){
-                val gioca = mazziere.games()[0]
-                var domandaNum by rememberSaveable { mutableIntStateOf(0) }
-                var punteggio = 0
-                var rispEsatte by rememberSaveable { mutableStateOf(BooleanArray(gioca.question.size)) }
-                //aggiungere domande tenendo in memoria quelle già giuste
-                val tmp = BooleanArray(gioca.question.size)
-                val totDomande: Int = if (rispEsatte.size > tmp.size) tmp.size else rispEsatte.size
-                var i = 0
-                while (i < totDomande){
-                    tmp[i] = rispEsatte[i]
-                    i++
-                }
-                rispEsatte = tmp
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                    Text(stringResource(R.string.App_name))
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            val objJS = worldClockAndroid.trivia.collectAsState()
+            if (objJS.value != null) {
+                val mazziere = objJS.value
+                if (mazziere != null){
+                    val gioca = mazziere.games()[0]
+                    var domandaNum by rememberSaveable { mutableIntStateOf(0) }
+                    var punteggio = 0
+                    var rispEsatte by rememberSaveable { mutableStateOf(BooleanArray(gioca.question.size)) }
+                    //aggiungere domande tenendo in memoria quelle già giuste
+                    val tmp = BooleanArray(gioca.question.size)
+                    val totDomande: Int = if (rispEsatte.size > tmp.size) tmp.size else rispEsatte.size
+                    var i = 0
+                    while (i < totDomande){
+                        tmp[i] = rispEsatte[i]
+                        i++
+                    }
+                    rispEsatte = tmp
 
-                for (risposta in rispEsatte){
-                    if (risposta) punteggio++
-                }
+                    for (risposta in rispEsatte){
+                        if (risposta) punteggio++
+                    }
 
-                var answer by remember { mutableStateOf("") }
-                var control by remember { mutableStateOf(false) }
-                Surface(modifier.fillMaxSize()) { //serve per circondare tutto con il tema
-                    Column(
-                        modifier = modifier.padding(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    var answer by remember { mutableStateOf("") }
+                    var control by remember { mutableStateOf(false) }
+                    Surface(//serve per circondare tutto con il tema e spostare tutto sotto alla topBar
+                        modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
                     ) {
-                        Text(
-                            modifier = modifier.padding(15.dp),
-                            text = gioca.question[domandaNum].text
-                        )
-                        OutlinedTextField(
-                            value = answer,
-                            onValueChange = { answer = it },
-                            label = { Text("Risposta") },
-                            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            singleLine = true,
-                            modifier = modifier.fillMaxWidth()
-                        )
-                        Button(
-                            modifier = modifier.padding(top = 15.dp),
-                            onClick = { control = true },
-                            enabled = !rispEsatte[domandaNum]
+                        Column(
+                            modifier = modifier.padding(20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Invia")
-                        }
-                        if (control) {
-                            val result =
-                                mazziere.answer(gioca.id, gioca.question[domandaNum].id, answer)
-                            AlertDialog(
-                                onDismissRequest = { control = false },
-                                confirmButton = {
-                                    Button(onClick = { control = false })
-                                    {
-                                        Text("Ok")
-                                    }
-                                },
-                                text = { Text(result.message) }
+                            Text(
+                                modifier = modifier.padding(15.dp),
+                                text = gioca.question[domandaNum].text
                             )
-                            if (result.correct) {
-                                rispEsatte[domandaNum] = true
-                                punteggio = 0
-                                for (risposta in rispEsatte) {
-                                    if (risposta) punteggio++
-                                }
-                                //enable = false
-                            } /*else {
+                            OutlinedTextField(
+                                value = answer,
+                                onValueChange = { answer = it },
+                                label = { Text("Risposta") },
+                                //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                modifier = modifier.fillMaxWidth()
+                            )
+                            Button(
+                                modifier = modifier.padding(top = 15.dp),
+                                onClick = { control = true },
+                                enabled = !rispEsatte[domandaNum]
+                            ) {
+                                Text(text = "Invia")
+                            }
+                            if (control) {
+                                val result =
+                                    mazziere.answer(gioca.id, gioca.question[domandaNum].id, answer)
+                                AlertDialog(
+                                    onDismissRequest = { control = false },
+                                    confirmButton = {
+                                        Button(onClick = { control = false })
+                                        {
+                                            Text("Ok")
+                                        }
+                                    },
+                                    text = { Text(result.message) }
+                                )
+                                if (result.correct) {
+                                    rispEsatte[domandaNum] = true
+                                    punteggio = 0
+                                    for (risposta in rispEsatte) {
+                                        if (risposta) punteggio++
+                                    }
+                                    //enable = false
+                                } /*else {
                              Toast.makeText(LocalContext.current, "Errato", Toast.LENGTH_SHORT).show()
                          }*/
-                        }
-                        Button(
-                            modifier = modifier.padding(top = 35.dp),
-                            onClick = {
-                                if (domandaNum < gioca.question.size - 1) domandaNum++
-                                else domandaNum = 0
-                                answer = ""
                             }
-                        ) {
-                            Text(text = "Prossima domanda ->")
+                            Button(
+                                modifier = modifier.padding(top = 35.dp),
+                                onClick = {
+                                    if (domandaNum < gioca.question.size - 1) domandaNum++
+                                    else domandaNum = 0
+                                    answer = ""
+                                }
+                            ) {
+                                Text(text = "Prossima domanda ->")
+                            }
+                            Text(
+                                modifier = modifier.padding(top = 15.dp),
+                                text = "Punteggio: $punteggio/${gioca.question.size}"
+                            )
                         }
-                        Text(
-                            modifier = modifier.padding(top = 15.dp),
-                            text = "Punteggio: $punteggio/${gioca.question.size}"
-                        )
                     }
                 }
-            }
-        } else {
-            Column(
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Text(
-                    fontSize = 38.sp,
-                    text = "Caricamento..."
-                )
+            } else {
+                Column(
+                    modifier = modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Text(
+                        fontSize = 38.sp,
+                        text = "Caricamento..."
+                    )
+                }
             }
         }
     }
