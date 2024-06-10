@@ -63,7 +63,8 @@ class WorldClockIos(private val scope: CoroutineScope) {
                 manifestVerifier = NO_SIGNATURE_CHECKS,
                 urlSession = urlSession,
             ),
-            manifestUrl = "http://localhost:8080/manifest.zipline.json",
+            manifestUrl = "https://raw.githubusercontent.com/EdoardoPauletto/forge/main/productionExecutable/kotlinZipline/manifest.zipline.json",
+            //manifestUrl = "http://localhost:8080/manifest.zipline.json",
             trivia = trivia
         )
         scope.launch(ziplineDispatcher) {
